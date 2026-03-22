@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { FundService } from '../../core/services/fund.service';
@@ -23,7 +23,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private fundService: FundService,
     public authService: AuthService,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -34,8 +35,8 @@ export class DashboardComponent implements OnInit {
   loadFunds() {
     this.loading = true;
     this.fundService.getFunds().subscribe({
-      next: (funds) => { this.funds = funds; this.loading = false; },
-      error: () => this.router.navigate(['/login'])
+      next: (funds) => { this.funds = funds; this.loading = false; this.cdr.detectChanges(); },
+      error: () => { this.loading = false; this.cdr.detectChanges(); this.router.navigate(['/login']); }
     });
   }
 

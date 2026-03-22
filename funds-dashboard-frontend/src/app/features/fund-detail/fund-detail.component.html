@@ -1,0 +1,131 @@
+<div class="overlay" (click)="close()">
+  <div class="panel" (click)="$event.stopPropagation()">
+    <div class="panel-header">
+      <div>
+        <h2 class="panel-title">Fund Details</h2>
+        @if (fund) { <p class="panel-subtitle">{{ fund.fundName }} · {{ fund.isin }}</p> }
+      </div>
+      <button class="btn-icon" (click)="close()">✕</button>
+    </div>
+
+    @if (!loading && fund) {
+    <div class="panel-body">
+      <div class="field-grid">
+        <div class="field-group">
+          <label>Fund Name</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.fundName" type="text" /> }
+          @else { <span>{{ fund.fundName }}</span> }
+        </div>
+        <div class="field-group">
+          <label>ISIN</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.isin" type="text" /> }
+          @else { <span>{{ fund.isin }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Currency</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.currency" type="text" /> }
+          @else { <span>{{ fund.currency }}</span> }
+        </div>
+        <div class="field-group">
+          <label>NAV</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.nav" type="number" step="0.01" /> }
+          @else { <span>{{ fund.nav | number:'1.2-2' }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Status</label>
+          <span class="badge badge-{{ fund.status.toLowerCase() }}">{{ fund.status }}</span>
+        </div>
+        <div class="field-group">
+          <label>Asset Class</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.assetClass" type="text" /> }
+          @else { <span>{{ fund.assetClass }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Fund Manager</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.fundManager" type="text" /> }
+          @else { <span>{{ fund.fundManager }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Inception Date</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.inceptionDate" type="date" /> }
+          @else { <span>{{ fund.inceptionDate | date:'mediumDate' }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Benchmark</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.benchmark" type="text" /> }
+          @else { <span>{{ fund.benchmark }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Domicile</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.domicile" type="text" /> }
+          @else { <span>{{ fund.domicile }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Risk Rating</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.riskRating" type="number" min="1" max="7" /> }
+          @else { <span>{{ fund.riskRating }}</span> }
+        </div>
+        <div class="field-group">
+          <label>AUM</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.aum" type="number" /> }
+          @else { <span>{{ fund.aum | number:'1.0-0' }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Min Investment</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.minInvestment" type="number" /> }
+          @else { <span>{{ fund.minInvestment | number:'1.0-0' }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Management Fee (%)</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.managementFee" type="number" step="0.01" /> }
+          @else { <span>{{ fund.managementFee }}%</span> }
+        </div>
+        <div class="field-group">
+          <label>Performance Fee (%)</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.performanceFee" type="number" step="0.01" /> }
+          @else { <span>{{ fund.performanceFee }}%</span> }
+        </div>
+        <div class="field-group">
+          <label>Distribution Frequency</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.distributionFrequency" type="text" /> }
+          @else { <span>{{ fund.distributionFrequency }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Fund Type</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.fundType" type="text" /> }
+          @else { <span>{{ fund.fundType }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Legal Structure</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.legalStructure" type="text" /> }
+          @else { <span>{{ fund.legalStructure }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Bloomberg Ticker</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.bloombergTicker" type="text" /> }
+          @else { <span>{{ fund.bloombergTicker }}</span> }
+        </div>
+        <div class="field-group">
+          <label>Bloomberg ID</label>
+          @if (isEditor()) { <input [(ngModel)]="editableFields.bloombergId" type="text" /> }
+          @else { <span>{{ fund.bloombergId }}</span> }
+        </div>
+      </div>
+
+      @if (message) { <p class="message">{{ message }}</p> }
+    </div>
+    }
+
+    <div class="panel-footer">
+      @if (isEditor()) {
+        <button class="btn btn-primary" (click)="save()" [disabled]="saving">Save</button>
+        <button class="btn btn-secondary" (click)="submit()" [disabled]="saving">Submit</button>
+      }
+      @if (isApprover()) {
+        <button class="btn btn-success" (click)="approve()" [disabled]="saving">Approve</button>
+        <button class="btn btn-danger" (click)="reject()" [disabled]="saving">Reject</button>
+      }
+      <button class="btn btn-outline" (click)="close()">Close</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="layout">
+  <header class="navbar">
+    <span class="navbar-title">Funds Dashboard</span>
+    <div class="navbar-right">
+      <span class="role-badge">{{ role }}</span>
+      <button class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="table-container">
+      @if (loading) { <div class="loading">Loading funds...</div> }
+      @if (!loading) {
+      <table class="funds-table">
+        <thead>
+          <tr>
+            <th>Fund Name</th>
+            <th>ISIN</th>
+            <th>Currency</th>
+            <th>NAV</th>
+            <th>Status</th>
+            @if (isApprover()) {
+              <th>Asset Class</th>
+              <th>Fund Manager</th>
+              <th>Inception Date</th>
+              <th>Benchmark</th>
+              <th>Domicile</th>
+              <th>Risk Rating</th>
+              <th>AUM</th>
+              <th>Min Investment</th>
+              <th>Mgmt Fee</th>
+              <th>Perf Fee</th>
+              <th>Distribution</th>
+              <th>Fund Type</th>
+              <th>Legal Structure</th>
+              <th>Bloomberg Ticker</th>
+              <th>Bloomberg ID</th>
+            }
+          </tr>
+        </thead>
+        <tbody>
+          @for (fund of funds; track fund.id) {
+            <tr class="fund-row" (click)="openDetail(fund.id)">
+              <td>{{ fund.fundName }}</td>
+              <td>{{ fund.isin }}</td>
+              <td>{{ fund.currency }}</td>
+              <td>{{ fund.nav | number:'1.2-2' }}</td>
+              <td><span [class]="statusClass(fund.status)">{{ fund.status }}</span></td>
+              @if (isApprover()) {
+                <td>{{ asFundDetail(fund).assetClass }}</td>
+                <td>{{ asFundDetail(fund).fundManager }}</td>
+                <td>{{ asFundDetail(fund).inceptionDate | date:'mediumDate' }}</td>
+                <td>{{ asFundDetail(fund).benchmark }}</td>
+                <td>{{ asFundDetail(fund).domicile }}</td>
+                <td>{{ asFundDetail(fund).riskRating }}</td>
+                <td>{{ asFundDetail(fund).aum | number:'1.0-0' }}</td>
+                <td>{{ asFundDetail(fund).minInvestment | number:'1.0-0' }}</td>
+                <td>{{ asFundDetail(fund).managementFee }}%</td>
+                <td>{{ asFundDetail(fund).performanceFee }}%</td>
+                <td>{{ asFundDetail(fund).distributionFrequency }}</td>
+                <td>{{ asFundDetail(fund).fundType }}</td>
+                <td>{{ asFundDetail(fund).legalStructure }}</td>
+                <td>{{ asFundDetail(fund).bloombergTicker }}</td>
+                <td>{{ asFundDetail(fund).bloombergId }}</td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table> }
+    </div>
+  </main>
+</div>
+
+@if (selectedFundId) {
+  <app-fund-detail
+    [fundId]="selectedFundId"
+    (closed)="closeDetail()">
+  </app-fund-detail>
+}

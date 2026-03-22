@@ -1,0 +1,116 @@
+.layout { display: flex; flex-direction: column; min-height: 100vh; }
+
+.navbar {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-sm);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.navbar-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.role-badge {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-accent);
+  background: #eef2ff;
+  padding: 3px 10px;
+  border-radius: 12px;
+}
+
+.btn-logout {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 5px 14px;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover { border-color: var(--color-accent); color: var(--color-accent); }
+
+.main { flex: 1; padding: 24px; overflow: hidden; }
+
+.table-container {
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+  max-height: calc(100vh - 104px);
+  overflow-y: auto;
+}
+
+.table-container::-webkit-scrollbar { width: 6px; height: 6px; }
+.table-container::-webkit-scrollbar-track { background: transparent; }
+.table-container::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
+
+.funds-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.funds-table thead {
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+  z-index: 10;
+}
+
+.funds-table th {
+  padding: 12px 16px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  border-bottom: 2px solid var(--color-border);
+  white-space: nowrap;
+}
+
+.funds-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+.fund-row { cursor: pointer; transition: background 0.15s; }
+.fund-row:hover { background: #f7f9fc; }
+
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-draft { background: var(--status-draft-bg); color: var(--status-draft-text); }
+.badge-submitted { background: var(--status-submitted-bg); color: var(--status-submitted-text); }
+.badge-approved { background: var(--status-approved-bg); color: var(--status-approved-text); }
+.badge-rejected { background: var(--status-rejected-bg); color: var(--status-rejected-text); }
+
+.loading { padding: 32px; text-align: center; color: var(--color-text-secondary); }

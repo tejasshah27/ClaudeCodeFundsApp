@@ -1,0 +1,98 @@
+#!/bin/sh
+# ----------------------------------------------------------------------------
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#    https://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+# ----------------------------------------------------------------------------
+
+# Apache Maven Wrapper startup script, version 3.2.0
+
+# OS specific support.
+cygwin=false
+darwin=false
+mingw=false
+case "$(uname)" in
+  CYGWIN*) cygwin=true ;;
+  MINGW*)  mingw=true  ;;
+  Darwin*) darwin=true ;;
+esac
+
+# Locate JAVACMD
+if [ -n "$JAVA_HOME" ]; then
+  JAVACMD="$JAVA_HOME/bin/java"
+else
+  JAVACMD="$(which java)"
+fi
+
+if [ ! -x "$JAVACMD" ]; then
+  echo "Error: JAVA_HOME is not defined correctly." >&2
+  echo "  We cannot execute $JAVACMD" >&2
+  exit 1
+fi
+
+# Find project base directory (directory containing .mvn)
+find_maven_basedir() {
+  basedir="$1"
+  wdir="$1"
+  while [ "$wdir" != "/" ]; do
+    if [ -d "$wdir/.mvn" ]; then
+      basedir="$wdir"
+      break
+    fi
+    wdir="$(cd "$wdir/.." && pwd)"
+  done
+  printf '%s' "$(cd "$basedir" && pwd -P)"
+}
+
+BASE_DIR="$(find_maven_basedir "$(dirname "$0")")"
+if [ -z "$BASE_DIR" ]; then
+  exit 1
+fi
+
+MAVEN_PROJECTBASEDIR="${MVNW_PROJECT_BASEDIR:-"$BASE_DIR"}"
+export MAVEN_PROJECTBASEDIR
+
+# Locate wrapper jar
+WRAPPER_JAR="$MAVEN_PROJECTBASEDIR/.mvn/wrapper/maven-wrapper.jar"
+
+if [ ! -r "$WRAPPER_JAR" ]; then
+  WRAPPER_URL="https://repo.maven.apache.org/maven2/org/apache/maven/wrapper/maven-wrapper/3.2.0/maven-wrapper-3.2.0.jar"
+  echo "Downloading Maven wrapper jar from $WRAPPER_URL ..."
+  if command -v curl > /dev/null; then
+    curl -o "$WRAPPER_JAR" "$WRAPPER_URL" -f -L
+  elif command -v wget > /dev/null; then
+    wget -O "$WRAPPER_JAR" "$WRAPPER_URL"
+  else
+    echo "Error: neither curl nor wget found; cannot download wrapper jar." >&2
+    exit 1
+  fi
+fi
+
+# Read jvm.config if present
+MAVEN_OPTS_FILE="$MAVEN_PROJECTBASEDIR/.mvn/jvm.config"
+if [ -f "$MAVEN_OPTS_FILE" ]; then
+  JVM_CONFIG_MAVEN_OPTS="$(tr -d '\r' < "$MAVEN_OPTS_FILE")"
+fi
+
+WRAPPER_LAUNCHER=org.apache.maven.wrapper.MavenWrapperMain
+
+exec "$JAVACMD" \
+  $MAVEN_OPTS \
+  $JVM_CONFIG_MAVEN_OPTS \
+  $MAVEN_DEBUG_OPTS \
+  -classpath "$WRAPPER_JAR" \
+  "-Dmaven.multiModuleProjectDirectory=${MAVEN_PROJECTBASEDIR}" \
+  ${WRAPPER_LAUNCHER} $MAVEN_CONFIG "$@"
